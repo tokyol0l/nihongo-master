@@ -15,8 +15,6 @@ interface ButtonProps {
   disabled?: boolean
   type?: 'button' | 'submit'
   className?: string
-  /** Бегущий блик — только для главной кнопки */
-  shimmer?: boolean
 }
 
 const variants: Record<ButtonVariant, string> = {
@@ -27,7 +25,7 @@ const variants: Record<ButtonVariant, string> = {
   ghost: 'border border-line bg-surface text-fg/80 hover:bg-surface-2 hover:text-fg',
 }
 
-/** Кнопка с пружинкой при нажатии и мягким свечением */
+/** Кнопка с пружинкой при нажатии */
 export function Button({
   children,
   onClick,
@@ -36,7 +34,6 @@ export function Button({
   disabled = false,
   type = 'button',
   className,
-  shimmer = false,
 }: ButtonProps) {
   return (
     <motion.button
@@ -55,7 +52,6 @@ export function Button({
         variants[variant],
         full && 'w-full',
         disabled && 'opacity-40 cursor-not-allowed',
-        shimmer && 'shimmer',
         className,
       )}
     >

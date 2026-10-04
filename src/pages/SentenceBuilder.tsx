@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, RefreshCw, RotateCcw, X } from 'lucide-react'
+import { Check, RefreshCw, RotateCcw, TrendingUp, X } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import clsx from 'clsx'
 import { sentencePuzzles } from '../data/sentencePuzzles'
@@ -163,7 +163,7 @@ export default function SentenceBuilder() {
             {score}/{session.length}
           </p>
           <p className="mt-2 text-sm text-fg/55">предложений собрано верно</p>
-          <Button full shimmer onClick={restart} className="mt-6">
+          <Button full onClick={restart} className="mt-6">
             <RefreshCw size={16} /> Ещё раз
           </Button>
         </motion.div>
@@ -193,7 +193,7 @@ export default function SentenceBuilder() {
                 key={level}
                 className="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-1.5 text-xs font-semibold"
               >
-                <span className="text-xs text-accent">📈</span>
+                <TrendingUp size={12} className="text-accent" />
                 <span>{levelLabel}</span>
                 {total > 0 && <span className="text-fg/50">({rate}%)</span>}
               </div>
@@ -266,7 +266,6 @@ export default function SentenceBuilder() {
               <>
                 <Button
                   full
-                  shimmer
                   disabled={picked.length !== puzzle.tiles.length}
                   onClick={check}
                 >
@@ -286,7 +285,7 @@ export default function SentenceBuilder() {
                 )}
               </>
             ) : (
-              <Button full shimmer onClick={next}>
+              <Button full onClick={next}>
                 Дальше
               </Button>
             )}

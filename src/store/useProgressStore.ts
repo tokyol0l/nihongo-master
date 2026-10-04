@@ -3,7 +3,6 @@ import { persist } from 'zustand/middleware'
 import type { ExamAttempt, ItemProgress, ItemStatus, QuizResult } from '../types'
 import { localDateKey } from '../utils/format'
 import { nextSchedule } from '../utils/srs'
-import { calculateAdaptiveLevel, type AdaptiveLevel } from '../utils/adaptiveLevel'
 
 /** Возвращает сегодняшнюю дату строкой вида 2026-09-27 (по местному времени) */
 function today(): string {
@@ -308,39 +307,4 @@ export function getWeeklyLearnedCount(progress: Record<string, ItemProgress>): n
   return Object.values(progress).filter(
     (p) => p.status === 'known' && !!p.learnedAt && p.learnedAt >= since,
   ).length
-}
-
-/** Вычисляет адаптивный уровень на основе текущего прогресса */
-export function computeAdaptiveLevel(state: ProgressState): AdaptiveLevel {
-  // Подсчитываем выученные карточки по категориям
-  const learned = {
-    hiragana: Object.values(state.progress).filter((p) => p.status === 'known').length,
-    katakana: 0, // В прогрессе хранятся все вместе, нужно было бы фильтровать по id
-    kanji: 0,
-    vocabulary: 0,
-  }
-
-  // Считаем успешность в тестах
-  const allAnswers = Object.values(state.progress)
-    .filter((p) => p.correct + p.wrong > 0)
-    .map((p) => ({
-      correct: p.correct,
-      total: p.correct + p.wrong,
-    }))
-
-  const totalCorrect = allAnswers.reduce((sum, a) => sum + a.correct, 0)
-  const totalAnswers = allAnswers.reduce((sum, a) => sum + a.total, 0)
-  const quizSuccessRate = totalAnswers > 0 ? totalCorrect / totalAnswers : 0.5
-
-  // Примерное количество пройденных уроков грамматики (по прогрессу)
-  const grammarLessons = Object.entries(state.progress)
-    .filter(([id]) => id.startsWith('l') && parseInt(id.slice(1)) <= 30)
-    .filter(([, p]) => p.status === 'known' || p.correct > 0).length
-
-  return calculateAdaptiveLevel({
-    learned,
-    grammarLessons,
-    quizSuccessRate,
-    streak: state.streak,
-  })
 }

@@ -159,7 +159,7 @@ export default function Settings() {
 
   function handleBuyFreeze() {
     const ok = buyStreakFreeze()
-    setShopMessage(ok ? 'Заморозка куплена! 🧊' : 'Не хватает очков')
+    setShopMessage(ok ? 'Заморозка куплена' : 'Не хватает очков')
     window.setTimeout(() => setShopMessage(null), 2500)
   }
 
@@ -172,7 +172,7 @@ export default function Settings() {
 
       <section className="space-y-3">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-fg/40">
-          💎 Магазин
+          Магазин
         </h2>
 
         <div className="glass flex flex-wrap items-center gap-4 rounded-lg p-4">
@@ -191,7 +191,7 @@ export default function Settings() {
             disabled={points < STREAK_FREEZE_COST}
             onClick={handleBuyFreeze}
           >
-            Купить за {STREAK_FREEZE_COST} ✨
+            Купить за {STREAK_FREEZE_COST} очков
           </Button>
         </div>
 
@@ -204,7 +204,7 @@ export default function Settings() {
 
       <section className="space-y-3">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-fg/40">
-          🔊 Голос озвучки
+          Голос озвучки
         </h2>
 
         {!speechSupported() ? (

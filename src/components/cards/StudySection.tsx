@@ -135,7 +135,6 @@ export function StudySection({ category }: { category: Category }) {
           <Button
             onClick={() => setFlashDeck(onlySelected(visible.length > 0 ? visible : items, excluded))}
             disabled={selectedItems.length === 0}
-            shimmer
           >
             <Layers size={16} /> Тренировать отмеченные
           </Button>

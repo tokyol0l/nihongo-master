@@ -72,7 +72,7 @@ export function ExamResults({ sections, answers, onRestart, onExit }: ExamResult
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <Button full shimmer onClick={onRestart}>
+          <Button full onClick={onRestart}>
             <RefreshCw size={16} /> Пройти ещё раз
           </Button>
           <Button full variant="ghost" onClick={onExit}>

@@ -247,7 +247,7 @@ export function QuizSetup({ onStart }: { onStart: (settings: QuizSettings) => vo
           </p>
         )}
 
-        <Button full shimmer disabled={tooFew} onClick={() => onStart({
+        <Button full disabled={tooFew} onClick={() => onStart({
             category,
             mode,
             count: Math.min(count, poolSize),

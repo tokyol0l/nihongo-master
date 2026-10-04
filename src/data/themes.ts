@@ -1,5 +1,5 @@
 /** Идентификатор темы оформления */
-export type ThemeId = 'indigo' | 'flat' | 'space' | 'paper' | 'ocean'
+export type ThemeId = 'indigo' | 'flat' | 'paper' | 'ocean'
 
 /** Описание темы для экрана настроек */
 export interface ThemeInfo {
@@ -22,12 +22,6 @@ export const themes: ThemeInfo[] = [
     name: 'Красная',
     description: 'Та же плоская тёмная тема, но акцент красный, а не индиго.',
     swatch: ['#16161a', '#1e1e24', '#e5484d'],
-  },
-  {
-    id: 'space',
-    name: 'Космос',
-    description: 'Фиолетовый градиент, стеклянные карточки, свечение и радужные заголовки.',
-    swatch: ['#302b63', '#4b4585', '#ff6b9d'],
   },
   {
     id: 'paper',

@@ -52,33 +52,6 @@
   --color-aqua: #e5484d;
 }
 
-/* ===== Тема «Космос»: градиент, стекло, свечение, крупные скругления ===== */
-:root[data-theme='space'] {
-  --color-bg: #0f0c29;
-  --color-surface: rgba(255, 255, 255, 0.06);
-  --color-surface-2: rgba(255, 255, 255, 0.12);
-  --color-line: rgba(255, 255, 255, 0.12);
-  --color-fg: #ffffff;
-
-  --color-accent: #ff6b9d;
-  --color-ok: #00d68f;
-  --color-bad: #ff3d71;
-  --color-warn: #ffc94d;
-  --color-sakura: #ff6b9d;
-  --color-lilac: #c471ed;
-  --color-aqua: #12c2e9;
-
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
-  --radius-3xl: 1.5rem;
-
-  --app-bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-  --glass-blur: 16px;
-  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-}
-
 /* ===== Тема «Светлая»: белый фон, чёрный текст ===== */
 :root[data-theme='paper'] {
   --color-bg: #faf9f7;
@@ -126,8 +99,7 @@ body {
   margin: 0;
   color: var(--color-fg);
   font-family: var(--font-ui);
-  /* В обычных темах фон сплошной, в «Космосе» подставляется градиент */
-  background: var(--app-bg, var(--color-bg));
+  background: var(--color-bg);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
 }
@@ -161,49 +133,6 @@ body {
   border: 1px solid color-mix(in srgb, var(--color-line) 70%, transparent);
   backdrop-filter: blur(var(--glass-blur, 0));
   -webkit-backdrop-filter: blur(var(--glass-blur, 0));
-}
-
-/* Радужный текст — только в теме «Космос», в остальных обычный цвет */
-.text-gradient {
-  color: var(--color-fg);
-}
-
-:root[data-theme='space'] .text-gradient {
-  background: linear-gradient(120deg, #ff6b9d, #c471ed, #12c2e9, #ff6b9d);
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: gradientMove 8s ease infinite;
-}
-
-@keyframes gradientMove {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* Свечения включаются только в «Космосе» */
-.glow-sakura, .glow-lilac, .glow-aqua { box-shadow: none; }
-:root[data-theme='space'] .glow-sakura { box-shadow: 0 10px 40px -10px rgba(255, 107, 157, 0.55); }
-:root[data-theme='space'] .glow-lilac  { box-shadow: 0 10px 40px -10px rgba(196, 113, 237, 0.55); }
-:root[data-theme='space'] .glow-aqua   { box-shadow: 0 10px 40px -10px rgba(18, 194, 233, 0.55); }
-
-/* Бегущий блик по кнопке — тоже только в «Космосе» */
-.shimmer::after { content: none; }
-
-:root[data-theme='space'] .shimmer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.3) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2.5s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 
 /* 3D-переворот карточки */

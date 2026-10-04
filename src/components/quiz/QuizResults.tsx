@@ -86,7 +86,7 @@ export function QuizResults({
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <Button full shimmer onClick={onRestart}>
+          <Button full onClick={onRestart}>
             <RefreshCw size={16} /> Ещё раз
           </Button>
           <Button full variant="ghost" onClick={onNewQuiz}>

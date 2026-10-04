@@ -206,7 +206,7 @@ export default function Home() {
             <Target size={16} className={weeklyDone ? 'text-ok' : 'text-accent'} />
             <span className="text-sm font-bold">
               {weeklyDone
-                ? 'Цель на неделю выполнена! 🎉'
+                ? 'Цель на неделю выполнена'
                 : `Цель на неделю: ${weeklyLearned} из ${weeklyGoal} слов`}
             </span>
           </div>
