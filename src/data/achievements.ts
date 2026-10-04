@@ -1,0 +1,103 @@
+import {
+  Award,
+  CircleCheckBig,
+  Crown,
+  Flame,
+  Medal,
+  Mountain,
+  Shield,
+  Sprout,
+  Star,
+  Swords,
+  Target,
+  Zap,
+} from 'lucide-react'
+import type { Achievement } from '../types'
+
+/** Список достижений. Каждое проверяется по текущей статистике. */
+export const achievements: Achievement[] = [
+  {
+    id: 'first-step',
+    title: 'Первый шаг',
+    description: 'Выучить первый знак',
+    icon: Sprout,
+    check: (s) => s.learned >= 1,
+  },
+  {
+    id: 'ten-signs',
+    title: 'Десятка',
+    description: 'Выучить 10 знаков',
+    icon: Star,
+    check: (s) => s.learned >= 10,
+  },
+  {
+    id: 'fifty-signs',
+    title: 'Полсотни',
+    description: 'Выучить 50 знаков',
+    icon: Award,
+    check: (s) => s.learned >= 50,
+  },
+  {
+    id: 'hundred-signs',
+    title: 'Сотня',
+    description: 'Выучить 100 знаков',
+    icon: Medal,
+    check: (s) => s.learned >= 100,
+  },
+  {
+    id: 'first-quiz',
+    title: 'Проверка боем',
+    description: 'Пройти первый тест',
+    icon: Target,
+    check: (s) => s.quizzes >= 1,
+  },
+  {
+    id: 'ten-quizzes',
+    title: 'Тренировка',
+    description: 'Пройти 10 тестов',
+    icon: Swords,
+    check: (s) => s.quizzes >= 10,
+  },
+  {
+    id: 'perfect',
+    title: 'Без единой ошибки',
+    description: 'Пройти тест на 100%',
+    icon: CircleCheckBig,
+    check: (s) => s.perfectQuizzes >= 1,
+  },
+  {
+    id: 'streak-3',
+    title: 'Три дня подряд',
+    description: 'Заниматься 3 дня подряд',
+    icon: Flame,
+    check: (s) => s.streak >= 3,
+  },
+  {
+    id: 'streak-7',
+    title: 'Неделя силы',
+    description: 'Заниматься 7 дней подряд',
+    icon: Mountain,
+    check: (s) => s.streak >= 7,
+  },
+  {
+    id: 'points-500',
+    title: '500 очков',
+    description: 'Набрать 500 очков',
+    icon: Zap,
+    check: (s) => s.points >= 500,
+  },
+  {
+    id: 'points-2000',
+    title: 'Мастер очков',
+    description: 'Набрать 2000 очков',
+    icon: Crown,
+    check: (s) => s.points >= 2000,
+  },
+  {
+    id: 'samurai',
+    title: 'Самурай',
+    description: 'Выучить 300 знаков и слов',
+    icon: Shield,
+    check: (s) => s.learned >= 300,
+  },
+]
