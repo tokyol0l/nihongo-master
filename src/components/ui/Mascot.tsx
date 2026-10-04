@@ -59,7 +59,7 @@ export function Mascot({ size = 40, className, withSpeech = false }: MascotProps
         </AnimatePresence>
       )}
       <img
-        src="/mascot.gif"
+        src={`${import.meta.env.BASE_URL}mascot.gif`}
         alt=""
         aria-hidden="true"
         draggable={false}
