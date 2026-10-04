@@ -36,10 +36,11 @@ export default function Textbook() {
       }
 
       // 2) На этом компьютере файл лежит в public/ (личная сборка разработчика)
+      const bundledUrl = `${import.meta.env.BASE_URL}textbook.pdf`
       try {
-        const res = await fetch('/textbook.pdf', { method: 'HEAD' })
+        const res = await fetch(bundledUrl, { method: 'HEAD' })
         if (res.ok && !cancelled) {
-          setFileUrl('/textbook.pdf')
+          setFileUrl(bundledUrl)
           setSource('bundled')
           setChecking(false)
           return

@@ -2,7 +2,7 @@
   "name": "Nihongo Master",
   "short_name": "Nihongo",
   "description": "Интерактивное приложение для изучения японского языка",
-  "start_url": "/",
+  "start_url": "/nihongo-master/",
   "display": "standalone",
   "background_color": "#16161a",
   "theme_color": "#16161a",
