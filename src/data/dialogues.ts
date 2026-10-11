@@ -12,6 +12,13 @@ export interface DialogueLine {
   audio?: string
 }
 
+/** Вопрос на понимание содержания диалога (не слов, а смысла целиком) */
+export interface ComprehensionQuestion {
+  question: string
+  options: string[]
+  answer: string
+}
+
 export interface Dialogue {
   id: string
   title: string
@@ -24,6 +31,8 @@ export interface Dialogue {
     romaji: string
     ru: string
   }>
+  /** Проверка понимания: о чём был разговор, кто что сказал */
+  comprehension: ComprehensionQuestion[]
 }
 
 export const dialogues: Dialogue[] = [
@@ -61,6 +70,18 @@ export const dialogues: Dialogue[] = [
     vocabulary: [
       { jp: 'よろしくお願いします', romaji: 'yoroshiku onegai shimasu', ru: 'рад познакомиться' },
       { jp: 'こちらこそ', romaji: 'kochira koso', ru: 'мне тоже' },
+    ],
+    comprehension: [
+      {
+        question: 'Как зовут второго человека (Б)?',
+        options: ['Танака', 'Ямада', 'Сато'],
+        answer: 'Ямада',
+      },
+      {
+        question: 'Это первая встреча этих людей или нет?',
+        options: ['Да, первая', 'Нет, они давно знакомы'],
+        answer: 'Да, первая',
+      },
     ],
   },
   {
@@ -100,6 +121,18 @@ export const dialogues: Dialogue[] = [
       { jp: 'アイス', romaji: 'aisu', ru: 'холодный' },
       { jp: 'お砂糖', romaji: 'o-satou', ru: 'сахар' },
     ],
+    comprehension: [
+      {
+        question: 'Что заказал посетитель?',
+        options: ['Кофе', 'Чай', 'Сок'],
+        answer: 'Кофе',
+      },
+      {
+        question: 'С сахаром или без просил сделать напиток?',
+        options: ['Без сахара', 'С сахаром'],
+        answer: 'Без сахара',
+      },
+    ],
   },
   {
     id: 'dl-3',
@@ -138,6 +171,18 @@ export const dialogues: Dialogue[] = [
       { jp: 'また', romaji: 'mata', ru: 'опять, ещё раз' },
       { jp: 'さようなら', romaji: 'sayounara', ru: 'до свидания' },
     ],
+    comprehension: [
+      {
+        question: 'Почему Б уходит?',
+        options: ['Уже поздно', 'Плохо себя чувствует', 'Ему скучно'],
+        answer: 'Уже поздно',
+      },
+      {
+        question: 'Когда они договорились увидеться снова?',
+        options: ['Завтра', 'На следующей неделе', 'Не договорились'],
+        answer: 'Завтра',
+      },
+    ],
   },
   {
     id: 'dl-4',
@@ -174,6 +219,18 @@ export const dialogues: Dialogue[] = [
       { jp: 'いくら', romaji: 'ikura', ru: 'сколько' },
       { jp: '安い', romaji: 'yasui', ru: 'дешёвый' },
       { jp: 'の', romaji: 'no', ru: '[показатель существительного]' },
+    ],
+    comprehension: [
+      {
+        question: 'Сколько стоила книга изначально?',
+        options: ['1500 иен', '1000 иен', '500 иен'],
+        answer: '1500 иен',
+      },
+      {
+        question: 'Что попросил покупатель?',
+        options: ['Что-нибудь подешевле', 'Другой цвет', 'Доставку домой'],
+        answer: 'Что-нибудь подешевле',
+      },
     ],
   },
   {
@@ -213,6 +270,18 @@ export const dialogues: Dialogue[] = [
       { jp: '趣味', romaji: 'shumi', ru: 'хобби' },
       { jp: '読書', romaji: 'dokusho', ru: 'чтение' },
       { jp: '映画', romaji: 'eiga', ru: 'кинофильм' },
+    ],
+    comprehension: [
+      {
+        question: 'Где работает Б?',
+        options: ['В компьютерной компании', 'В кафе', 'В школе'],
+        answer: 'В компьютерной компании',
+      },
+      {
+        question: 'Какое хобби у Б?',
+        options: ['Чтение и кино', 'Спорт', 'Готовка'],
+        answer: 'Чтение и кино',
+      },
     ],
   },
 ]

@@ -3,12 +3,64 @@ import { Volume2, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import clsx from 'clsx'
 import { dialogues } from '../data/dialogues'
+import type { ComprehensionQuestion } from '../data/dialogues'
 import { speak } from '../utils/speech'
+import { playCorrect, playWrong } from '../utils/sound'
 
 const levelLabel: Record<'easy' | 'medium' | 'hard', string> = {
   easy: 'Просто',
   medium: 'Средне',
   hard: 'Сложно',
+}
+
+/** Короткая проверка понимания диалога: вопрос о содержании, не о словах */
+function ComprehensionQuiz({ questions }: { questions: ComprehensionQuestion[] }) {
+  const [answers, setAnswers] = useState<Record<number, string>>({})
+
+  function answer(qIndex: number, option: string) {
+    if (answers[qIndex]) return
+    setAnswers((a) => ({ ...a, [qIndex]: option }))
+    if (option === questions[qIndex].answer) playCorrect()
+    else playWrong()
+  }
+
+  return (
+    <div className="mt-8 border-t border-line pt-6">
+      <h3 className="mb-3 font-semibold">Проверь понимание:</h3>
+      <div className="space-y-4">
+        {questions.map((q, qi) => {
+          const picked = answers[qi]
+          return (
+            <div key={qi}>
+              <p className="mb-2 text-sm font-semibold">{q.question}</p>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {q.options.map((option) => {
+                  const isRight = option === q.answer
+                  const isPicked = picked === option
+                  return (
+                    <button
+                      key={option}
+                      disabled={!!picked}
+                      onClick={() => answer(qi, option)}
+                      className={clsx(
+                        'rounded-lg border px-3 py-2 text-left text-sm transition-colors',
+                        !picked && 'border-line bg-surface hover:border-accent',
+                        picked && isRight && 'border-ok bg-ok/10 text-ok',
+                        picked && isPicked && !isRight && 'border-bad bg-bad/10 text-bad',
+                        picked && !isPicked && !isRight && 'border-line bg-surface opacity-50',
+                      )}
+                    >
+                      {option}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 /** Страница с диалогами для практики слушания и разговора */
@@ -163,6 +215,11 @@ export default function Dialogues() {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* Проверка понимания — ключ по id диалога, чтобы ответы сбрасывались при смене */}
+          {selected.comprehension.length > 0 && (
+            <ComprehensionQuiz key={selected.id} questions={selected.comprehension} />
           )}
         </motion.div>
       </AnimatePresence>
