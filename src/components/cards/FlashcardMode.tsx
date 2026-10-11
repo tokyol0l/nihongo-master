@@ -56,7 +56,7 @@ export function FlashcardMode({ items, onClose, onRate }: FlashcardModeProps) {
   if (!card) {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-bg p-6 text-center">
-        <p className="text-fg/70">Не отмечено ни одной карточки — тренировать нечего.</p>
+        <p className="text-fg/70">Не отмечено ни одной карточки - тренировать нечего.</p>
         <button
           onClick={onClose}
           className="glass rounded-2xl px-5 py-2.5 text-sm font-bold transition hover:bg-fg/10"
@@ -117,7 +117,7 @@ export function FlashcardMode({ items, onClose, onRate }: FlashcardModeProps) {
                 <span className="jp text-center text-[110px] font-bold leading-none">
                   {card.char}
                 </span>
-                <span className="mt-6 text-xs text-fg/35">нажми или пробел — перевернуть</span>
+                <span className="mt-6 text-xs text-fg/35">нажми или пробел - перевернуть</span>
               </div>
 
               {/* Оборот */}

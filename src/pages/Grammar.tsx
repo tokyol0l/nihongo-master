@@ -21,7 +21,7 @@ export default function Grammar() {
         <div className="jp text-sm text-fg/40">文法</div>
         <h1 className="text-3xl font-bold sm:text-4xl">Грамматика</h1>
         <p className="mt-2 text-sm text-fg/50">
-          Пять уроков учебника «Минна но Нихонго I» — теория и задания
+          Пять уроков учебника «Минна но Нихонго I» - теория и задания
         </p>
       </div>
 

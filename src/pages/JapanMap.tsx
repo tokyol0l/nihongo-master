@@ -61,7 +61,7 @@ export default function JapanMap() {
         <div className="jp text-sm text-fg/40">日本地図</div>
         <h1 className="text-3xl font-bold sm:text-4xl">Карта Японии</h1>
         <p className="mt-2 text-sm text-fg/50">
-          Нажимай на точки, чтобы узнать про город или гору — все 47 префектур на настоящих контурах
+          Нажимай на точки, чтобы узнать про город или гору - все 47 префектур на настоящих контурах
         </p>
       </div>
 

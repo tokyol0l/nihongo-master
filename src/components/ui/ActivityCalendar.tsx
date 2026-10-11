@@ -9,7 +9,7 @@ const WEEKS = 26
 export function ActivityCalendar({ days }: { days: string[] }) {
   const active = useMemo(() => new Set(days), [days])
 
-  // Собираем сетку: столбец — неделя, строка — день недели
+  // Собираем сетку: столбец - неделя, строка - день недели
   const weeks = useMemo(() => {
     const today = new Date()
     // Отматываем назад к понедельнику текущей недели

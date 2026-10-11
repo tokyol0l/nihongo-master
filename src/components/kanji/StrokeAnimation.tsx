@@ -13,7 +13,7 @@ interface StrokeAnimationProps {
 
 /**
  * Показывает, как рисуется кандзи: штрихи появляются по одному в
- * правильном порядке письма. Данные — из открытого датасета KanjiVG,
+ * правильном порядке письма. Данные - из открытого датасета KanjiVG,
  * без изменений.
  */
 export function StrokeAnimation({ char, playKey, size = 220 }: StrokeAnimationProps) {
@@ -32,11 +32,11 @@ export function StrokeAnimation({ char, playKey, size = 220 }: StrokeAnimationPr
 
   return (
     <svg viewBox={data.viewbox} width={size} height={size}>
-      {/* Направляющие линии — крест по центру, как в прописях */}
+      {/* Направляющие линии - крест по центру, как в прописях */}
       <line x1="50%" y1="0" x2="50%" y2="100%" stroke="var(--color-line)" strokeWidth={0.6} />
       <line x1="0" y1="50%" x2="100%" y2="50%" stroke="var(--color-line)" strokeWidth={0.6} />
 
-      {/* Полупрозрачный контур всего иероглифа — ориентир */}
+      {/* Полупрозрачный контур всего иероглифа - ориентир */}
       {data.strokes.map((d, i) => (
         <path
           key={`ghost-${i}`}

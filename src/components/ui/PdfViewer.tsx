@@ -10,17 +10,17 @@ const CMAP_URL = `${import.meta.env.BASE_URL}pdfjs/cmaps/`
 const STANDARD_FONT_URL = `${import.meta.env.BASE_URL}pdfjs/standard_fonts/`
 
 interface PdfViewerProps {
-  /** Blob- или обычный URL PDF-файла, без #page=N — страницей управляет сам компонент */
+  /** Blob- или обычный URL PDF-файла, без #page=N - страницей управляет сам компонент */
   src: string
   /** С какой страницы открыть (если известна сохранённая позиция) */
   initialPage?: number
-  /** Вызывается при каждой смене страницы — для сохранения позиции снаружи */
+  /** Вызывается при каждой смене страницы - для сохранения позиции снаружи */
   onPageChange?: (page: number, totalPages: number) => void
 }
 
 /**
  * Собственный просмотрщик PDF на pdfjs-dist (вместо встроенного в браузер),
- * чтобы точно знать текущую страницу и уметь её запоминать — встроенный
+ * чтобы точно знать текущую страницу и уметь её запоминать - встроенный
  * просмотрщик браузера такой возможности не даёт.
  */
 export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerProps) {
@@ -37,7 +37,7 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
 
   // Загружаем документ при смене файла.
   // Эффект в StrictMode (dev) запускается дважды подряд с немедленной
-  // отменой первого запуска — без флага cancelled отменённая первая
+  // отменой первого запуска - без флага cancelled отменённая первая
   // загрузка успевала бы записать ошибку поверх успеха второй.
   useEffect(() => {
     let cancelled = false
@@ -97,7 +97,7 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
       const task = page.render({ canvasContext: ctx, viewport, canvas })
       renderTaskRef.current = task
       task.promise.catch(() => {
-        // отменённый рендер — ожидаемо при быстром листании
+        // отменённый рендер - ожидаемо при быстром листании
       })
     })
 
@@ -131,10 +131,20 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
     setScale((s) => Math.max(0.5, +(s - 0.2).toFixed(2)))
   }
 
-  function onKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'ArrowLeft') goPrev()
-    if (e.key === 'ArrowRight') goNext()
-  }
+  // Стрелки листают страницы всегда, пока открыт просмотрщик - не только
+  // когда на нём стоит фокус. Не перехватываем их в полях ввода (там
+  // стрелки должны менять число/курсор как обычно).
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement | null)?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      if (e.key === 'ArrowLeft') goPrev()
+      else if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (error) {
     return (
@@ -146,7 +156,7 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
   }
 
   return (
-    <div className="flex h-full flex-col" tabIndex={0} onKeyDown={onKeyDown}>
+    <div className="flex h-full flex-col">
       <div className="flex flex-1 items-center justify-center overflow-auto bg-fg/5 p-4">
         {loading ? (
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-fg/15 border-t-sakura" />

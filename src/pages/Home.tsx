@@ -36,7 +36,7 @@ interface SectionCard {
   kana: string
   description: string
   icon: LucideIcon
-  /** Раздел с карточками — для него покажем прогресс. У тестов и статистики его нет */
+  /** Раздел с карточками - для него покажем прогресс. У тестов и статистики его нет */
   category?: Category
 }
 
@@ -301,7 +301,7 @@ export default function Home() {
           <div className="min-w-0">
             <h2 className="text-lg font-extrabold">Впиши чтение с клавиатуры</h2>
             <p className="mt-1 text-sm text-fg/50">
-              Показывается знак — печатаешь его чтение латиницей и жмёшь Enter. 20 знаков подряд.
+              Показывается знак - печатаешь его чтение латиницей и жмёшь Enter. 20 знаков подряд.
             </p>
           </div>
         </div>

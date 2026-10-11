@@ -36,7 +36,7 @@ export function useRoadmap(): { steps: RoadmapProgress[]; current: RoadmapProgre
       }
     })
 
-    // Текущий шаг — первый непройденный, всё после него закрыто
+    // Текущий шаг - первый непройденный, всё после него закрыто
     const currentIndex = counted.findIndex((row) => !row.done)
 
     const steps = counted.map<RoadmapProgress>((row, i) => ({

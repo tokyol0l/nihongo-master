@@ -6,7 +6,7 @@ import { useProgressStore } from '../../store/useProgressStore'
 import { Flame, Snowflake, Star } from 'lucide-react'
 
 interface SidebarProps {
-  /** Закрыть меню — нужно в мобильной версии */
+  /** Закрыть меню - нужно в мобильной версии */
   onNavigate?: () => void
 }
 

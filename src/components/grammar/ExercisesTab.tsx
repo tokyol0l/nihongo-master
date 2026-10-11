@@ -26,7 +26,7 @@ export function ExercisesTab({ lesson }: { lesson: GrammarLesson }) {
           Отвечено {answeredCount} из {lesson.exercises.length}
           {allAnswered && (
             <span className="ml-2 font-semibold text-fg">
-              — верно {correctCount} из {lesson.exercises.length}
+              - верно {correctCount} из {lesson.exercises.length}
             </span>
           )}
         </span>

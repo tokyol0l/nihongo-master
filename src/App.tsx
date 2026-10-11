@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import Home from './pages/Home'
 
-// Главная грузится сразу, остальные страницы — только когда на них заходят.
+// Главная грузится сразу, остальные страницы - только когда на них заходят.
 // Так первый экран открывается быстрее.
 const Roadmap = lazy(() => import('./pages/Roadmap'))
 const Hiragana = lazy(() => import('./pages/Hiragana'))

@@ -254,7 +254,7 @@ export default function SentenceBuilder() {
             >
               {checked ? <Check size={16} className="mt-0.5 shrink-0" /> : <X size={16} className="mt-0.5 shrink-0" />}
               <span>
-                {!checked && <span className="jp font-semibold">{puzzle.tiles.join('')} — </span>}
+                {!checked && <span className="jp font-semibold">{puzzle.tiles.join('')} - </span>}
                 {puzzle.romaji} · {puzzle.ru}
               </span>
             </motion.div>

@@ -21,7 +21,7 @@ function getContext(): AudioContext | null {
     if (!Ctor) return null
     ctx = new Ctor()
   }
-  // Браузер «усыпляет» контекст, пока не было клика — будим его
+  // Браузер «усыпляет» контекст, пока не было клика - будим его
   if (ctx.state === 'suspended') void ctx.resume()
   return ctx
 }

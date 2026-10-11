@@ -52,9 +52,9 @@ export function StudySection({ category }: { category: Category }) {
   const [subset, setSubset] = useState<KanaSubset | null>(null)
   // Колода запоминается в момент открытия, чтобы оценки не перетасовывали её на ходу
   const [flashDeck, setFlashDeck] = useState<StudyItem[] | null>(null)
-  // Сколько карточек показано в каждой группе — остальные не монтируются вообще.
+  // Сколько карточек показано в каждой группе - остальные не монтируются вообще.
   // Сбрасываем на первую порцию прямо при рендере, если фильтр/поиск/набор
-  // поменялись — это принятый в React способ, без лишнего прохода через эффект.
+  // поменялись - это принятый в React способ, без лишнего прохода через эффект.
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const resetKey = `${filter}|${query}|${subset}`
   const [prevResetKey, setPrevResetKey] = useState(resetKey)
@@ -81,7 +81,7 @@ export function StudySection({ category }: { category: Category }) {
   }, [items, progress, filter, query, subset, showSubsets])
 
   const learned = items.filter((i) => getItemProgress(progress, i.id).status === 'known').length
-  // Отмеченные карточки — только они идут в тренировку и в тесты
+  // Отмеченные карточки - только они идут в тренировку и в тесты
   const selectedItems = onlySelected(items, excluded)
 
   /** Ставит или снимает галочку сразу у списка карточек */
@@ -95,7 +95,7 @@ export function StudySection({ category }: { category: Category }) {
 
   /** Блоки, на которые делится сетка карточек */
   const groups = useMemo(() => {
-    // У кандзи и словаря деления нет — там одна общая сетка
+    // У кандзи и словаря деления нет - там одна общая сетка
     if (!showSubsets) return [{ key: 'all', title: null, hint: null, items: visible }]
 
     // Если выбран конкретный набор, показываем только его, без заголовка
@@ -105,7 +105,7 @@ export function StudySection({ category }: { category: Category }) {
       {
         key: 'basic',
         title: 'Основные знаки',
-        hint: 'Базовая азбука — с них начинают',
+        hint: 'Базовая азбука - с них начинают',
         items: visible.filter((item) => item.subset === 'basic'),
       },
       {
@@ -164,7 +164,7 @@ export function StudySection({ category }: { category: Category }) {
         </div>
       </div>
 
-      {/* Основные знаки или озвончённые — только для азбук */}
+      {/* Основные знаки или озвончённые - только для азбук */}
       {showSubsets && (
         <div className="mb-3 flex flex-wrap gap-2">
           {([null, 'basic', 'dakuten'] as (KanaSubset | null)[]).map((value) => (
@@ -227,7 +227,7 @@ export function StudySection({ category }: { category: Category }) {
               (item) => getItemProgress(progress, item.id).status === 'known',
             ).length
 
-            // Показываем только первую порцию карточек группы — остальные
+            // Показываем только первую порцию карточек группы - остальные
             // не мешают браузеру, пока их не попросили показать
             const shown = group.items.slice(0, visibleCount)
             const hiddenCount = group.items.length - shown.length

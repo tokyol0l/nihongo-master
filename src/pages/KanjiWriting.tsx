@@ -26,7 +26,7 @@ export default function KanjiWriting() {
         <div className="jp text-sm text-fg/40">書き方</div>
         <h1 className="text-3xl font-bold sm:text-4xl">Прописи кандзи</h1>
         <p className="mt-2 text-sm text-fg/50">
-          Смотри порядок черт и обводи иероглиф от руки — настоящие данные о письме, а не догадки
+          Смотри порядок черт и обводи иероглиф от руки - настоящие данные о письме, а не догадки
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export default function KanjiWriting() {
             <div>
               <div className="jp text-4xl font-bold">{item?.char}</div>
               <div className="mt-1 text-sm text-fg/50">
-                {item?.romaji} — {item?.meaning}
+                {item?.romaji} - {item?.meaning}
               </div>
             </div>
             <button

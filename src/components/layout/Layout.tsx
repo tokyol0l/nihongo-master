@@ -28,7 +28,7 @@ export function Layout({ children }: { children: ReactNode }) {
     setMuted(!sounds)
   }, [sounds])
 
-  // Отмечаем, что пользователь сегодня заходил — это поддерживает серию дней
+  // Отмечаем, что пользователь сегодня заходил - это поддерживает серию дней
   useEffect(() => {
     touchStreak()
   }, [touchStreak])
@@ -52,7 +52,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Mascot size={96} withSpeech />
       </motion.div>
 
-      {/* Меню на широком экране — всегда видно слева */}
+      {/* Меню на широком экране - всегда видно слева */}
       <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-line bg-surface lg:block">
         <Sidebar />
       </aside>

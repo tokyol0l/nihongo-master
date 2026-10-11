@@ -212,7 +212,7 @@ export default function Stats() {
 
         {stats.quizHistory.length === 0 ? (
           <p className="text-sm text-fg/45">
-            Тестов пока нет. Пройди первый — он появится здесь.
+            Тестов пока нет. Пройди первый - он появится здесь.
           </p>
         ) : (
           <div className="space-y-2">

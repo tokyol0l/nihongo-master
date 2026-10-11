@@ -92,7 +92,7 @@ export function QuizRunner({ settings, onFinish, onQuit }: QuizRunnerProps) {
       setEarned((p) => p + gained)
       setCombo((c) => {
         const next = c + 1
-        // На круглых сериях маскот поздравляет отдельно, иначе — обычное «Правильно»
+        // На круглых сериях маскот поздравляет отдельно, иначе - обычное «Правильно»
         if (next === 5) sayMascot('5 подряд!', 'streak')
         else if (next === 10) sayMascot('10 подряд, огонь!', 'streak')
         else if (next === 15) sayMascot('15 подряд, ты мастер!', 'streak')
@@ -166,7 +166,7 @@ export function QuizRunner({ settings, onFinish, onQuit }: QuizRunnerProps) {
 
   return (
     <div className="mx-auto max-w-2xl">
-      {/* Красная вспышка только на ошибку — зелёной больше нет */}
+      {/* Красная вспышка только на ошибку - зелёной больше нет */}
       <AnimatePresence>
         {result === 'wrong' && (
           <motion.div

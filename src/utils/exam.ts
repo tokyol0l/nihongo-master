@@ -8,16 +8,16 @@ const VOCAB_KANJI_COUNT = 12
 const GRAMMAR_COUNT = 10
 const LISTENING_COUNT = 10
 
-/** Один вопрос экзамена — любой раздел приведён к одному виду для общего рендера */
+/** Один вопрос экзамена - любой раздел приведён к одному виду для общего рендера */
 export interface ExamQuestion {
   id: string
   /** Что показать крупно: кандзи, слово или грамматический вопрос с пропуском */
   prompt: string
-  /** Если true — prompt не показываем текстом, а только озвучиваем */
+  /** Если true - prompt не показываем текстом, а только озвучиваем */
   isListening: boolean
   options: string[]
   answer: string
-  /** Разбор верного ответа — показываем в конце на экране результатов */
+  /** Разбор верного ответа - показываем в конце на экране результатов */
   explain: string
 }
 
@@ -40,7 +40,7 @@ export function buildExam(): ExamSection[] {
       isListening: false,
       options: q.options,
       answer: q.answer,
-      explain: `${q.item.char} (${q.item.romaji}) — ${q.item.meaning ?? q.item.romaji}`,
+      explain: `${q.item.char} (${q.item.romaji}) - ${q.item.meaning ?? q.item.romaji}`,
     }),
   )
 
@@ -72,7 +72,7 @@ export function buildExam(): ExamSection[] {
       options: q.options,
       answer: q.answer,
       explain: q.item.meaning
-        ? `${q.item.char} (${q.item.romaji}) — ${q.item.meaning}`
+        ? `${q.item.char} (${q.item.romaji}) - ${q.item.meaning}`
         : `${q.item.char} (${q.item.romaji})`,
     }),
   )
@@ -102,7 +102,7 @@ export function buildExam(): ExamSection[] {
   ]
 }
 
-/** Порог «сдал» — упрощённый, не официальная методика подсчёта баллов JLPT */
+/** Порог «сдал» - упрощённый, не официальная методика подсчёта баллов JLPT */
 const PASS_OVERALL = 0.6
 const PASS_PER_SECTION = 0.4
 

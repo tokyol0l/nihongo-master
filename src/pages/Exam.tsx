@@ -64,7 +64,7 @@ export default function Exam() {
               <div className="jp text-sm text-fg/40">模擬試験</div>
               <h1 className="text-3xl font-bold sm:text-4xl">Пробный экзамен N5</h1>
               <p className="mt-2 text-sm text-fg/50">
-                Три раздела как на настоящем JLPT — проверь, готов ли ты
+                Три раздела как на настоящем JLPT - проверь, готов ли ты
               </p>
             </div>
 
@@ -101,9 +101,9 @@ export default function Exam() {
                   <Clock size={18} className="text-accent" />
                 </span>
                 <div>
-                  <div className="text-sm font-bold">На каждый вопрос — свой таймер</div>
+                  <div className="text-sm font-bold">На каждый вопрос - свой таймер</div>
                   <div className="text-xs text-fg/50">
-                    Как на настоящем экзамене — ответ или пропуск сразу ведёт дальше,
+                    Как на настоящем экзамене - ответ или пропуск сразу ведёт дальше,
                     без подсказок «верно / неверно» по ходу дела
                   </div>
                 </div>

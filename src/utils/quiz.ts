@@ -7,13 +7,13 @@ export interface Question {
   item: StudyItem
   /** Правильный ответ строкой */
   answer: string
-  /** Варианты ответа — только для режимов с выбором */
+  /** Варианты ответа - только для режимов с выбором */
   options: string[]
   /** Режим этого конкретного вопроса (для смешанного режима) */
   mode: QuizMode
 }
 
-/** Что показывать как ответ: для каны — ромадзи, для кандзи и слов — перевод */
+/** Что показывать как ответ: для каны - ромадзи, для кандзи и слов - перевод */
 export function answerFor(item: StudyItem): string {
   if (item.category === 'hiragana' || item.category === 'katakana') return item.romaji
   return item.meaning ?? item.romaji
@@ -28,7 +28,7 @@ export function buildQuestions(pool: StudyItem[], mode: QuizMode, count: number)
     // В смешанном режиме чередуем режимы
     const itemMode = mode === 'mixed' ? baseModes[i % baseModes.length] : mode
 
-    // В режиме «на слух» варианты — это сами символы, в остальных — переводы
+    // В режиме «на слух» варианты - это сами символы, в остальных - переводы
     const answer = itemMode === 'listening' ? item.char : answerFor(item)
 
     if (itemMode === 'typing') {

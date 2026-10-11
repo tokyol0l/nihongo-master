@@ -35,7 +35,7 @@ interface SentenceLevelStats {
 }
 
 interface ProgressState {
-  /** Прогресс по каждой карточке: ключ — id карточки */
+  /** Прогресс по каждой карточке: ключ - id карточки */
   progress: Record<string, ItemProgress>
   /** Накопленные очки */
   points: number
@@ -45,7 +45,7 @@ interface ProgressState {
   bestStreak: number
   /** День последнего занятия (строка YYYY-MM-DD) */
   lastDay: string | null
-  /** Все дни, когда заходил заниматься — для календаря активности */
+  /** Все дни, когда заходил заниматься - для календаря активности */
   studyDays: string[]
   /** История пройденных тестов, новые в начале */
   quizHistory: QuizResult[]
@@ -55,14 +55,14 @@ interface ProgressState {
   unlocked: string[]
   /**
    * Карточки, снятые галочкой. Хранится именно список исключённых,
-   * поэтому по умолчанию выбрано всё — и новые карточки тоже.
+   * поэтому по умолчанию выбрано всё - и новые карточки тоже.
    */
   excluded: Record<string, true>
   /** Статистика по уровням сложности в "Собери предложение" */
   sentenceStats: Record<'easy' | 'medium' | 'hard', SentenceLevelStats>
-  /** Сколько новых слов/кандзи — цель на неделю */
+  /** Сколько новых слов/кандзи - цель на неделю */
   weeklyGoal: number
-  /** Сколько заморозок серии куплено — спасают streak при пропущенном дне */
+  /** Сколько заморозок серии куплено - спасают streak при пропущенном дне */
   streakFreezes: number
 
   /** Поставить карточке статус: знаю / повторить / сложно */
@@ -117,15 +117,15 @@ export const useProgressStore = create<ProgressState>()(
       setStatus: (id, status) =>
         set((state) => {
           const current = state.progress[id] ?? emptyProgress
-          // Ручная оценка тоже планирует повторение: «Знаю» — как верный
-          // ответ, «Сложно» — как ошибку, «Повторить» и «Знаю не до конца» не трогают план
+          // Ручная оценка тоже планирует повторение: «Знаю» - как верный
+          // ответ, «Сложно» - как ошибку, «Повторить» и «Знаю не до конца» не трогают план
           const schedule =
             status === 'known'
               ? nextSchedule(current, true)
               : status === 'hard'
                 ? nextSchedule(current, false)
                 : null
-          // Запоминаем момент, когда карточка впервые стала «знаю» — для недельной цели
+          // Запоминаем момент, когда карточка впервые стала «знаю» - для недельной цели
           const justLearned = status === 'known' && current.status !== 'known'
 
           return {
@@ -148,8 +148,8 @@ export const useProgressStore = create<ProgressState>()(
           const correct = current.correct + (isCorrect ? 1 : 0)
           const wrong = current.wrong + (isCorrect ? 0 : 1)
 
-          // Два верных ответа подряд без ошибок — считаем, что знаю.
-          // Ошибся — карточка уходит в «сложные».
+          // Два верных ответа подряд без ошибок - считаем, что знаю.
+          // Ошибся - карточка уходит в «сложные».
           let status: ItemStatus = current.status
           if (isCorrect && correct >= 2 && current.status !== 'known') status = 'known'
           if (isCorrect && current.status === 'new') status = 'review'
@@ -201,8 +201,8 @@ export const useProgressStore = create<ProgressState>()(
           const day = today()
           if (state.lastDay === day) return state
 
-          // Занимался вчера — серия растёт. Пропустил день, но есть
-          // заморозка — серия спасена и расходуется одна заморозка.
+          // Занимался вчера - серия растёт. Пропустил день, но есть
+          // заморозка - серия спасена и расходуется одна заморозка.
           // Иначе серия начинается заново.
           const gap = state.lastDay ? daysBetween(state.lastDay, day) : null
           const missedButFrozen = gap !== null && gap > 1 && state.streakFreezes > 0
@@ -295,13 +295,13 @@ export function getLearnedCount(progress: Record<string, ItemProgress>): number 
 /** Timestamp начала текущей календарной недели (понедельник, 00:00 по местному времени) */
 function startOfWeek(): number {
   const now = new Date()
-  const day = now.getDay() // 0 — воскресенье, 1 — понедельник, ...
+  const day = now.getDay() // 0 - воскресенье, 1 - понедельник, ...
   const diffToMonday = day === 0 ? 6 : day - 1
   const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diffToMonday)
   return monday.getTime()
 }
 
-/** Сколько карточек стало «знаю» за текущую неделю (с понедельника) — для недельной цели */
+/** Сколько карточек стало «знаю» за текущую неделю (с понедельника) - для недельной цели */
 export function getWeeklyLearnedCount(progress: Record<string, ItemProgress>): number {
   const since = startOfWeek()
   return Object.values(progress).filter(

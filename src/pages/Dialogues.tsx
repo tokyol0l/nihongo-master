@@ -217,7 +217,7 @@ export default function Dialogues() {
             </div>
           )}
 
-          {/* Проверка понимания — ключ по id диалога, чтобы ответы сбрасывались при смене */}
+          {/* Проверка понимания - ключ по id диалога, чтобы ответы сбрасывались при смене */}
           {selected.comprehension.length > 0 && (
             <ComprehensionQuiz key={selected.id} questions={selected.comprehension} />
           )}

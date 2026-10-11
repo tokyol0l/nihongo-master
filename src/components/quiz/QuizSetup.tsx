@@ -15,9 +15,9 @@ export interface QuizSettings {
   category: Category
   mode: QuizMode
   count: number
-  /** Ограничение времени на вопрос в секундах, 0 — без таймера */
+  /** Ограничение времени на вопрос в секундах, 0 - без таймера */
   seconds: number
-  /** Для азбук: какую часть брать. null — все знаки */
+  /** Для азбук: какую часть брать. null - все знаки */
   subset: KanaSubset | null
   /** Брать только карточки, отмеченные галочкой в разделе */
   onlyMarked: boolean
@@ -27,25 +27,25 @@ const modes: { value: QuizMode; label: string; hint: string; icon: LucideIcon }[
   {
     value: 'mixed',
     label: 'Смешанный (всё сразу)',
-    hint: 'Чередуются ввод, выбор и слух — максимальная тренировка',
+    hint: 'Чередуются ввод, выбор и слух - максимальная тренировка',
     icon: Play,
   },
   {
     value: 'typing',
     label: 'Ввод чтения с клавиатуры',
-    hint: 'Показан знак — печатаешь чтение латиницей, например ji',
+    hint: 'Показан знак - печатаешь чтение латиницей, например ji',
     icon: Keyboard,
   },
   {
     value: 'choice',
     label: 'Выбор перевода',
-    hint: 'Показан символ — выбери правильный вариант',
+    hint: 'Показан символ - выбери правильный вариант',
     icon: ListChecks,
   },
   {
     value: 'listening',
     label: 'На слух',
-    hint: 'Звучит слово — выбери нужный символ',
+    hint: 'Звучит слово - выбери нужный символ',
     icon: Ear,
   },
 ]
@@ -131,7 +131,7 @@ export function QuizSetup({ onStart }: { onStart: (settings: QuizSettings) => vo
             </div>
             <p className="mt-2 text-xs text-fg/35">
               {subset === 'basic'
-                ? 'В тесте попадутся только 46 основных знаков — が, ば и подобные не встретятся.'
+                ? 'В тесте попадутся только 46 основных знаков - が, ば и подобные не встретятся.'
                 : subset === 'dakuten'
                   ? 'Только знаки с дакутэн и хандакутэн: が, ざ, だ, ば, ぱ.'
                   : 'Все 71 знак вперемешку.'}
@@ -235,7 +235,7 @@ export function QuizSetup({ onStart }: { onStart: (settings: QuizSettings) => vo
             <span className="flex-1">
               <span className="block text-sm font-bold">Только отмеченные карточки</span>
               <span className="block text-xs text-fg/45">
-                Берутся те, у которых стоит галочка в разделе — сейчас подходит {poolSize}
+                Берутся те, у которых стоит галочка в разделе - сейчас подходит {poolSize}
               </span>
             </span>
           </button>

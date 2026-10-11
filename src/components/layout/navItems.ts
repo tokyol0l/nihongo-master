@@ -24,7 +24,7 @@ import type { LucideIcon } from 'lucide-react'
 export interface NavItem {
   to: string
   label: string
-  /** Подпись кандзи справа — только для японского режима */
+  /** Подпись кандзи справа - только для японского режима */
   kana?: string
   icon: LucideIcon
 }

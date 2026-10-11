@@ -35,7 +35,7 @@ export function QuizResults({
   onNewQuiz,
 }: QuizResultsProps) {
   const score = percent(correct, total)
-  // Число очков «докручивается» от нуля — так приятнее смотреть
+  // Число очков «докручивается» от нуля - так приятнее смотреть
   const [shown, setShown] = useState(0)
 
   useEffect(() => {

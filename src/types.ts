@@ -23,7 +23,7 @@ export interface StudyItem {
   char: string
   /** Чтение латиницей (ромадзи) */
   romaji: string
-  /** Чтение каной — есть у кандзи и слов */
+  /** Чтение каной - есть у кандзи и слов */
   kana?: string
   /** Перевод на русский */
   meaning?: string
@@ -50,11 +50,11 @@ export interface ItemProgress {
   wrong: number
   /** Когда последний раз видел (timestamp) */
   seenAt: number
-  /** Интервал до следующего повторения, в днях — ядро интервального повторения */
+  /** Интервал до следующего повторения, в днях - ядро интервального повторения */
   interval: number
   /** Коэффициент лёгкости: растёт от верных ответов, падает от ошибок */
   ease: number
-  /** Когда карточка снова станет «пора повторить» (timestamp). 0 — ещё не планировалась */
+  /** Когда карточка снова станет «пора повторить» (timestamp). 0 - ещё не планировалась */
   dueAt: number
   /** Когда карточка впервые стала «знаю» (timestamp). Нужно для недельной цели */
   learnedAt?: number
@@ -89,7 +89,7 @@ export interface ExamAttempt {
   date: number
   correct: number
   total: number
-  /** Сдал ли — по упрощённому порогу, не официальная методика JLPT */
+  /** Сдал ли - по упрощённому порогу, не официальная методика JLPT */
   passed: boolean
   sections: ExamSectionResult[]
 }
@@ -101,7 +101,7 @@ export interface Achievement {
   description: string
   /** Иконка достижения */
   icon: LucideIcon
-  /** Функция проверки — выполнено ли достижение */
+  /** Функция проверки - выполнено ли достижение */
   check: (stats: AchievementInput) => boolean
 }
 

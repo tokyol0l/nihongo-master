@@ -7,7 +7,7 @@ import { speak } from '../../utils/speech'
 import { playClick } from '../../utils/sound'
 import { ProgressBar } from '../ui/ProgressBar'
 
-/** Один отвеченный вопрос — храним для итогового разбора */
+/** Один отвеченный вопрос - храним для итогового разбора */
 export interface ExamAnswer {
   sectionId: string
   question: ExamQuestion
@@ -23,7 +23,7 @@ interface ExamRunnerProps {
 
 /**
  * Проводит через все разделы экзамена по очереди. В отличие от обычного
- * теста — без подсказки «верно/неверно» на каждом вопросе: как и на
+ * теста - без подсказки «верно/неверно» на каждом вопросе: как и на
  * настоящем экзамене, разбор виден только в самом конце.
  */
 export function ExamRunner({ sections, onFinish, onQuit }: ExamRunnerProps) {
@@ -46,9 +46,9 @@ export function ExamRunner({ sections, onFinish, onQuit }: ExamRunnerProps) {
     if (question.isListening) speak(question.prompt)
   }, [question, showSectionIntro])
 
-  // Таймер на вопрос — не успел, значит пропустил
+  // Таймер на вопрос - не успел, значит пропустил
   useEffect(() => {
-    // Пропуск по таймеру помечается пустой строкой — она ложная,
+    // Пропуск по таймеру помечается пустой строкой - она ложная,
     // поэтому сравниваем именно с null, а не проверяем на истинность
     if (showSectionIntro || !question || selected !== null) return
     if (timeLeft <= 0) {

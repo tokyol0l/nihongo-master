@@ -5,7 +5,7 @@ export function hasSubsets(category: Category): boolean {
   return category === 'hiragana' || category === 'katakana'
 }
 
-/** Оставляет только нужную часть азбуки; null — значит «все знаки» */
+/** Оставляет только нужную часть азбуки; null - значит «все знаки» */
 export function filterBySubset(items: StudyItem[], subset: KanaSubset | null): StudyItem[] {
   if (!subset) return items
   return items.filter((item) => item.subset === subset)

@@ -47,7 +47,7 @@ function Switch({
   )
 }
 
-/** Ползунок с подписью и текущим значением — для скорости и громкости голоса */
+/** Ползунок с подписью и текущим значением - для скорости и громкости голоса */
 function Slider({
   label,
   value,
@@ -65,7 +65,7 @@ function Slider({
   step: number
   format: (v: number) => string
   onChange: (next: number) => void
-  /** Срабатывает когда отпустили ползунок — удобно для тестовой озвучки */
+  /** Срабатывает когда отпустили ползунок - удобно для тестовой озвучки */
   onAfterChange?: () => void
 }) {
   return (
@@ -117,7 +117,7 @@ export default function Settings() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(() => listJapaneseVoices())
   const [shopMessage, setShopMessage] = useState<string | null>(null)
 
-  // Голоса браузер подгружает асинхронно — список может быть пустым при первой отрисовке
+  // Голоса браузер подгружает асинхронно - список может быть пустым при первой отрисовке
   useEffect(() => {
     if (!speechSupported()) return
     const update = () => setVoices(listJapaneseVoices())
@@ -214,13 +214,13 @@ export default function Settings() {
         ) : voices.length === 0 ? (
           <div className="space-y-2">
             <p className="rounded-lg bg-warn/10 px-3 py-3 text-sm text-warn">
-              Браузер не нашёл ни одного японского голоса — поэтому озвучка звучит криво или
+              Браузер не нашёл ни одного японского голоса - поэтому озвучка звучит криво или
               молчит.
             </p>
             <p className="text-xs text-fg/50">
               Это чинится не в приложении, а в системе:
               <br />
-              • Проще всего — открой это же приложение в <b>Microsoft Edge</b>, у него есть
+              • Проще всего - открой это же приложение в <b>Microsoft Edge</b>, у него есть
               встроенные естественные японские голоса (Nanami, Keita).
               <br />
               • Или в Windows: Параметры → Время и язык → Язык и регион → добавить{' '}
@@ -303,7 +303,7 @@ export default function Settings() {
               onAfterChange={testCurrentVoice}
             />
             <p className="text-[11px] text-fg/35">
-              Чуть ниже тон и чуть медленнее речь — звучит мягче и живее, не так «роботически».
+              Чуть ниже тон и чуть медленнее речь - звучит мягче и живее, не так «роботически».
               Попробуй тон около −10% вместе со скоростью 0.8–0.9×. Ползунок сразу проигрывает
               тестовую фразу, когда отпускаешь его.
             </p>
@@ -326,7 +326,7 @@ export default function Settings() {
                 theme === item.id ? 'border-accent' : 'hover:border-fg/25',
               )}
             >
-              {/* Три полоски — фон, карточка, акцент выбранной темы */}
+              {/* Три полоски - фон, карточка, акцент выбранной темы */}
               <span className="flex h-14 w-14 shrink-0 overflow-hidden rounded border border-line">
                 {item.swatch.map((color) => (
                   <span key={color} className="flex-1" style={{ backgroundColor: color }} />
@@ -378,7 +378,7 @@ export default function Settings() {
         </h2>
         <p className="text-xs text-fg/45">
           Весь прогресс хранится только в этом браузере. Очистка кэша или переустановка браузера
-          сотрёт его без возврата — скачай копию на всякий случай.
+          сотрёт его без возврата - скачай копию на всякий случай.
         </p>
 
         <div className="flex flex-wrap gap-3">

@@ -22,7 +22,7 @@ export default function Review() {
 
   const dueItems = useMemo(
     () => getDueItems(allItems, progress, excluded),
-    // Пересчитываем список только при реальном открытии страницы —
+    // Пересчитываем список только при реальном открытии страницы -
     // иначе отвеченная карточка исчезала бы прямо посреди сессии
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -71,7 +71,7 @@ export default function Review() {
           <Sparkles size={28} className="mx-auto text-accent" />
           <h1 className="mt-3 text-2xl font-bold">Повторять пока нечего</h1>
           <p className="mt-2 text-sm text-fg/55">
-            Карточки появятся здесь, когда для них подойдёт срок — он считается от того, как
+            Карточки появятся здесь, когда для них подойдёт срок - он считается от того, как
             давно и насколько уверенно ты отвечал по ним в тестах.
           </p>
         </div>
