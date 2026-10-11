@@ -35,8 +35,12 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
   const [pageInput, setPageInput] = useState('')
   const [scale, setScale] = useState(1.3)
 
-  // Загружаем документ при смене файла
+  // Загружаем документ при смене файла.
+  // Эффект в StrictMode (dev) запускается дважды подряд с немедленной
+  // отменой первого запуска — без флага cancelled отменённая первая
+  // загрузка успевала бы записать ошибку поверх успеха второй.
   useEffect(() => {
+    let cancelled = false
     setLoading(true)
     setError(null)
     setNumPages(0)
@@ -51,6 +55,7 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
 
     loadingTask.promise
       .then((doc) => {
+        if (cancelled) return
         docRef.current = doc
         setNumPages(doc.numPages)
         const start = initialPage && initialPage >= 1 && initialPage <= doc.numPages ? initialPage : 1
@@ -58,12 +63,14 @@ export default function PdfViewer({ src, initialPage, onPageChange }: PdfViewerP
         setLoading(false)
       })
       .catch((err: unknown) => {
+        if (cancelled) return
         const message = err instanceof Error ? err.message : 'Не удалось открыть файл'
         setError(message)
         setLoading(false)
       })
 
     return () => {
+      cancelled = true
       loadingTask.destroy()
     }
     // initialPage читаем только при смене файла, не отслеживаем отдельно
