@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { FileUp, Maximize2, Minimize2, Plus, Trash2, Upload } from 'lucide-react'
 import { loadLocalFile, removeLocalFile, saveLocalFile } from '../utils/localFileStore'
+import PdfViewer from '../components/ui/PdfViewer'
 
 /** Список вкладок-учебников хранится тут — просто имена и id, сами файлы в IndexedDB */
 const SLOTS_KEY = 'nihongo-master-textbook-slots'
 /** Префикс ключа файла в IndexedDB для вкладки с этим id */
 const fileKey = (id: string) => `textbook-${id}`
-/** Ключ для запомненной страницы каждой вкладки */
+/** Ключ для запомненной страницы каждой вкладки — сохраняется автоматически просмотрщиком */
 const pageKey = (id: string) => `nihongo-master-textbook-page-${id}`
 
 interface TextbookSlot {
@@ -30,7 +31,9 @@ function saveSlots(slots: TextbookSlot[]) {
 }
 
 /**
- * Страница «Учебник»: просмотр PDF прямо в браузере, без парсинга.
+ * Страница «Учебник»: просмотр PDF прямо в браузере через свой PdfViewer
+ * (pdfjs-dist) — это даёт знать текущую страницу и запоминать её
+ * автоматически, чего не умеет встроенный просмотрщик браузера.
  * Можно держать сразу несколько книг — у каждой своя вкладка сверху,
  * свой файл в этом браузере. Добавить книгу — кнопка «+», переименовать
  * нельзя (удали и создай заново с нужным именем), убрать — корзина.
@@ -45,12 +48,12 @@ export default function Textbook() {
   const [activeId, setActiveId] = useState(() => loadSlots()[0]?.id ?? 'default')
   const [fileUrl, setFileUrl] = useState<string | null>(null)
   const [checking, setChecking] = useState(true)
-  const [page, setPage] = useState('')
   const [fullscreen, setFullscreen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const active = slots.find((s) => s.id === activeId) ?? slots[0]
+  const initialPage = Number(localStorage.getItem(pageKey(activeId)) ?? '1') || 1
 
   // Следим за полноэкранным режимом снаружи (Esc тоже должен сбрасывать кнопку)
   useEffect(() => {
@@ -67,14 +70,8 @@ export default function Textbook() {
     }
   }
 
-  function goToPage(e: React.FormEvent) {
-    e.preventDefault()
-    const n = parseInt(page, 10)
-    if (!n || n < 1 || !fileUrl) return
-    localStorage.setItem(pageKey(activeId), String(n))
-    // Меняем src целиком, чтобы встроенный просмотрщик точно перескочил
-    const base = fileUrl.split('#')[0]
-    setFileUrl(`${base}#page=${n}`)
+  function handlePageChange(page: number) {
+    localStorage.setItem(pageKey(activeId), String(page))
   }
 
   // Подгружаем файл активной вкладки при каждом переключении
@@ -84,14 +81,10 @@ export default function Textbook() {
     setFileUrl(null)
 
     async function init() {
-      const savedPage = localStorage.getItem(pageKey(activeId))
-      setPage(savedPage ?? '')
-      const hash = savedPage ? `#page=${savedPage}` : ''
-
       // 1) Уже выбирал файл для этой вкладки раньше
       const stored = await loadLocalFile(fileKey(activeId))
       if (stored && !cancelled) {
-        setFileUrl(`${URL.createObjectURL(stored)}${hash}`)
+        setFileUrl(URL.createObjectURL(stored))
         setChecking(false)
         return
       }
@@ -103,7 +96,7 @@ export default function Textbook() {
         try {
           const res = await fetch(bundledUrl, { method: 'HEAD' })
           if (res.ok && !cancelled) {
-            setFileUrl(`${bundledUrl}${hash}`)
+            setFileUrl(bundledUrl)
             setChecking(false)
             return
           }
@@ -146,6 +139,7 @@ export default function Textbook() {
     if (!window.confirm('Убрать эту вкладку и её файл?')) return
 
     await removeLocalFile(fileKey(id))
+    localStorage.removeItem(pageKey(id))
     const next = slots.filter((s) => s.id !== id)
     setSlots(next)
     saveSlots(next)
@@ -201,33 +195,13 @@ export default function Textbook() {
           <Plus size={14} /> Добавить
         </button>
 
-        <div className="ml-auto flex items-center gap-2">
-          {fileUrl && (
-            <form onSubmit={goToPage} className="flex items-center gap-1">
-              <input
-                type="number"
-                min={1}
-                value={page}
-                onChange={(e) => setPage(e.target.value)}
-                placeholder="Стр."
-                className="glass-soft w-16 rounded-lg px-2 py-1.5 text-sm"
-              />
-              <button
-                type="submit"
-                className="glass-soft rounded-lg px-2.5 py-1.5 text-xs font-semibold text-fg/60 transition hover:text-fg"
-              >
-                Перейти
-              </button>
-            </form>
-          )}
-          <button
-            onClick={toggleFullscreen}
-            aria-label={fullscreen ? 'Выйти из полноэкранного режима' : 'На весь экран'}
-            className="glass-soft rounded-lg p-1.5 text-fg/60 transition hover:text-fg"
-          >
-            {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          </button>
-        </div>
+        <button
+          onClick={toggleFullscreen}
+          aria-label={fullscreen ? 'Выйти из полноэкранного режима' : 'На весь экран'}
+          className="glass-soft ml-auto rounded-lg p-1.5 text-fg/60 transition hover:text-fg"
+        >
+          {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+        </button>
       </div>
 
       {checking ? (
@@ -236,7 +210,7 @@ export default function Textbook() {
         </div>
       ) : fileUrl ? (
         <div className="glass flex-1 overflow-hidden rounded-lg">
-          <iframe src={fileUrl} title={active?.name ?? 'Учебник'} className="h-full w-full rounded-lg" />
+          <PdfViewer key={activeId} src={fileUrl} initialPage={initialPage} onPageChange={handlePageChange} />
         </div>
       ) : (
         <div className="glass flex flex-1 flex-col items-center justify-center gap-6 rounded-lg p-8 text-center">
