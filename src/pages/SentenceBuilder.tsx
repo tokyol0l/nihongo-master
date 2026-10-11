@@ -220,11 +220,11 @@ export default function SentenceBuilder() {
           exit={{ opacity: 0, x: -16 }}
           transition={{ duration: 0.18 }}
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4">
             <span className="rounded bg-surface-2 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-fg/45">
               {levelLabel[puzzle.level]}
             </span>
-            <span className="text-xs text-fg/40">{puzzle.ru}</span>
+            <p className="mt-2 text-lg font-bold text-fg">{puzzle.ru}</p>
           </div>
 
           {/* Собранное предложение */}
