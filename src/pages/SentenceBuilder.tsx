@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, RefreshCw, RotateCcw, TrendingUp, X } from 'lucide-react'
+import { Check, RefreshCw, RotateCcw, X } from 'lucide-react'
 import { useState, useMemo } from 'react'
 import clsx from 'clsx'
 import { sentencePuzzles } from '../data/sentencePuzzles'
@@ -193,7 +193,6 @@ export default function SentenceBuilder() {
                 key={level}
                 className="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-1.5 text-xs font-semibold"
               >
-                <TrendingUp size={12} className="text-accent" />
                 <span>{levelLabel}</span>
                 {total > 0 && <span className="text-fg/50">({rate}%)</span>}
               </div>
