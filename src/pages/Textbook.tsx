@@ -1,52 +1,81 @@
 import { useEffect, useRef, useState } from 'react'
-import { FileUp, RotateCcw, Upload } from 'lucide-react'
+import { FileUp, Plus, Trash2, Upload } from 'lucide-react'
 import { loadLocalFile, removeLocalFile, saveLocalFile } from '../utils/localFileStore'
 
-const STORAGE_KEY = 'textbook'
+/** Список вкладок-учебников хранится тут — просто имена и id, сами файлы в IndexedDB */
+const SLOTS_KEY = 'nihongo-master-textbook-slots'
+/** Префикс ключа файла в IndexedDB для вкладки с этим id */
+const fileKey = (id: string) => `textbook-${id}`
+
+interface TextbookSlot {
+  id: string
+  name: string
+}
+
+function loadSlots(): TextbookSlot[] {
+  try {
+    const raw = localStorage.getItem(SLOTS_KEY)
+    if (!raw) return [{ id: 'default', name: 'Учебник' }]
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [{ id: 'default', name: 'Учебник' }]
+  } catch {
+    return [{ id: 'default', name: 'Учебник' }]
+  }
+}
+
+function saveSlots(slots: TextbookSlot[]) {
+  localStorage.setItem(SLOTS_KEY, JSON.stringify(slots))
+}
 
 /**
  * Страница «Учебник»: просмотр PDF прямо в браузере, без парсинга.
+ * Можно держать сразу несколько книг — у каждой своя вкладка сверху,
+ * свой файл в этом браузере. Добавить книгу — кнопка «+», переименовать
+ * нельзя (удали и создай заново с нужным именем), убрать — корзина.
  *
- * Сам файл учебника в проект не входит (это чужой коммерческий материал —
- * его нельзя раздавать всем посетителям публичного сайта). Вместо этого
- * каждый использует свою собственную, уже имеющуюся у него копию:
- * - на личном компьютере разработчика файл может лежать в public/textbook.pdf
- *   (не отслеживается git'ом) — тогда он подхватывается автоматически;
- * - у любого другого человека приложение просто предложит один раз
- *   выбрать свой PDF с диска. Файл остаётся только в этом браузере
- *   (IndexedDB) и никуда не отправляется — ни на сервер, ни куда-либо ещё.
+ * Файлы учебников в проект не входят (чужой коммерческий материал — его
+ * нельзя раздавать всем посетителям публичного сайта). Каждый использует
+ * свою собственную, уже имеющуюся у него копию — она остаётся только в
+ * этом браузере (IndexedDB) и никуда не отправляется.
  */
 export default function Textbook() {
+  const [slots, setSlots] = useState<TextbookSlot[]>(() => loadSlots())
+  const [activeId, setActiveId] = useState(() => loadSlots()[0]?.id ?? 'default')
   const [fileUrl, setFileUrl] = useState<string | null>(null)
-  const [source, setSource] = useState<'bundled' | 'local' | null>(null)
   const [checking, setChecking] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const active = slots.find((s) => s.id === activeId) ?? slots[0]
+
+  // Подгружаем файл активной вкладки при каждом переключении
   useEffect(() => {
     let cancelled = false
+    setChecking(true)
+    setFileUrl(null)
 
     async function init() {
-      // 1) Уже выбирал файл раньше — он сохранён в этом браузере
-      const stored = await loadLocalFile(STORAGE_KEY)
+      // 1) Уже выбирал файл для этой вкладки раньше
+      const stored = await loadLocalFile(fileKey(activeId))
       if (stored && !cancelled) {
         setFileUrl(URL.createObjectURL(stored))
-        setSource('local')
         setChecking(false)
         return
       }
 
-      // 2) На этом компьютере файл лежит в public/ (личная сборка разработчика)
-      const bundledUrl = `${import.meta.env.BASE_URL}textbook.pdf`
-      try {
-        const res = await fetch(bundledUrl, { method: 'HEAD' })
-        if (res.ok && !cancelled) {
-          setFileUrl(bundledUrl)
-          setSource('bundled')
-          setChecking(false)
-          return
+      // 2) Для вкладки по умолчанию — проверяем public/textbook.pdf
+      //    (личная сборка разработчика, не отслеживается git'ом)
+      if (activeId === 'default') {
+        const bundledUrl = `${import.meta.env.BASE_URL}textbook.pdf`
+        try {
+          const res = await fetch(bundledUrl, { method: 'HEAD' })
+          if (res.ok && !cancelled) {
+            setFileUrl(bundledUrl)
+            setChecking(false)
+            return
+          }
+        } catch {
+          // файла нет — ничего страшного
         }
-      } catch {
-        // игнорируем — просто нет файла
       }
 
       if (!cancelled) setChecking(false)
@@ -56,41 +85,78 @@ export default function Textbook() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [activeId])
 
   async function handleFileChosen(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     e.target.value = ''
-    if (!file) return
+    if (!file || !active) return
 
-    await saveLocalFile(STORAGE_KEY, file)
+    await saveLocalFile(fileKey(active.id), file)
     setFileUrl(URL.createObjectURL(file))
-    setSource('local')
   }
 
-  async function forgetFile() {
-    await removeLocalFile(STORAGE_KEY)
-    setFileUrl(null)
-    setSource(null)
+  function addSlot() {
+    const name = window.prompt('Название учебника (например, «Кандзи» или «Грамматика»):')
+    if (!name || !name.trim()) return
+
+    const id = `slot-${Date.now()}`
+    const next = [...slots, { id, name: name.trim() }]
+    setSlots(next)
+    saveSlots(next)
+    setActiveId(id)
+  }
+
+  async function removeSlot(id: string) {
+    if (slots.length <= 1) return
+    if (!window.confirm('Убрать эту вкладку и её файл?')) return
+
+    await removeLocalFile(fileKey(id))
+    const next = slots.filter((s) => s.id !== id)
+    setSlots(next)
+    saveSlots(next)
+    if (activeId === id) setActiveId(next[0].id)
   }
 
   return (
     <div className="mx-auto flex h-[calc(100vh-7rem)] max-w-6xl flex-col">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="jp text-sm text-fg/40">教科書</div>
-          <h1 className="text-3xl font-bold sm:text-4xl">Учебник</h1>
-          <p className="mt-1 text-sm text-fg/50">Открой свой PDF учебника — он останется только у тебя в браузере</p>
-        </div>
+      <div className="mb-4">
+        <div className="jp text-sm text-fg/40">教科書</div>
+        <h1 className="text-3xl font-bold sm:text-4xl">Учебник</h1>
+        <p className="mt-1 text-sm text-fg/50">Можно держать несколько книг — переключайся вкладками</p>
+      </div>
 
-        {fileUrl && source === 'local' && (
-          <button
-            onClick={forgetFile}
-            className="glass-soft flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-fg/70 transition hover:text-fg"
-          >
-            <RotateCcw size={14} /> Выбрать другой файл
-          </button>
-        )}
+      {/* Вкладки учебников */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        {slots.map((slot) => (
+          <div key={slot.id} className="group relative">
+            <button
+              onClick={() => setActiveId(slot.id)}
+              className={
+                slot.id === activeId
+                  ? 'rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-white'
+                  : 'glass-soft rounded-lg px-3 py-1.5 text-sm font-semibold text-fg/70 transition hover:text-fg'
+              }
+            >
+              {slot.name}
+            </button>
+            {slots.length > 1 && (
+              <button
+                onClick={() => removeSlot(slot.id)}
+                aria-label={`Убрать «${slot.name}»`}
+                className="absolute -right-1.5 -top-1.5 hidden rounded-full bg-bad p-0.5 text-white group-hover:block"
+              >
+                <Trash2 size={11} />
+              </button>
+            )}
+          </div>
+        ))}
+        <button
+          onClick={addSlot}
+          className="glass-soft flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-semibold text-fg/60 transition hover:text-fg"
+        >
+          <Plus size={14} /> Добавить
+        </button>
       </div>
 
       {checking ? (
@@ -99,7 +165,7 @@ export default function Textbook() {
         </div>
       ) : fileUrl ? (
         <div className="glass flex-1 overflow-hidden rounded-lg">
-          <iframe src={fileUrl} title="Учебник" className="h-full w-full rounded-lg" />
+          <iframe src={fileUrl} title={active?.name ?? 'Учебник'} className="h-full w-full rounded-lg" />
         </div>
       ) : (
         <div className="glass flex flex-1 flex-col items-center justify-center gap-6 rounded-lg p-8 text-center">
@@ -108,15 +174,12 @@ export default function Textbook() {
           </div>
 
           <div className="max-w-md space-y-3">
-            <h2 className="text-lg font-bold">Учебника пока нет</h2>
+            <h2 className="text-lg font-bold">Для «{active?.name}» пока нет файла</h2>
             <p className="text-sm text-fg/60">
               У приложения нет своей копии учебника — у каждого должна быть своя, уже купленная.
               Если он у тебя скачан (например, лежит в папке <b>Загрузки</b>), просто выбери этот
               файл ниже. Он не будет никуда загружаться — останется прямо в этом браузере, как
               закладка.
-            </p>
-            <p className="text-xs text-fg/40">
-              Подойдёт любой PDF с учебником — имя файла не важно.
             </p>
           </div>
 
